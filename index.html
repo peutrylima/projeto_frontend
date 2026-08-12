@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gerenciador de Tarefas Acadêmicas - Quadro de Projetos</title>
+</head>
+<body>
+
+  <header>
+    <h1>Gerenciador de Tarefas Acadêmicas</h1>
+  </header>
+
+  <main>
+    <!-- Região de Busca e Filtros -->
+    <section aria-labelledby="titulo-filtros">
+      <h2 id="titulo-filtros">Filtros e Busca</h2>
+      
+      <form role="search">
+        <div>
+          <label for="busca-titulo">Buscar por título da tarefa:</label>
+          <input type="search" id="busca-titulo" name="busca-titulo">
+        </div>
+
+        <fieldset>
+          <legend>Filtrar por Status</legend>
+          <input type="radio" id="status-todos" name="filtro-status" value="todos" checked>
+          <label for="status-todos">Todos</label>
+
+          <input type="radio" id="status-a-fazer" name="filtro-status" value="a-fazer">
+          <label for="status-a-fazer">A fazer</label>
+
+          <input type="radio" id="status-em-andamento" name="filtro-status" value="em-andamento">
+          <label for="status-em-andamento">Em andamento</label>
+
+          <input type="radio" id="status-em-revisao" name="filtro-status" value="em-revisao">
+          <label for="status-em-revisao">Em revisão</label>
+
+          <input type="radio" id="status-concluida" name="filtro-status" value="concluida">
+          <label for="status-concluida">Concluída</label>
+        </fieldset>
+
+        <fieldset>
+          <legend>Filtrar por Prioridade</legend>
+          <input type="radio" id="prio-todas" name="filtro-prioridade" value="todas" checked>
+          <label for="prio-todas">Todas</label>
+
+          <input type="radio" id="prio-baixa" name="filtro-prioridade" value="baixa">
+          <label for="prio-baixa">Baixa</label>
+
+          <input type="radio" id="prio-media" name="filtro-prioridade" value="media">
+          <label for="prio-media">Média</label>
+
+          <input type="radio" id="prio-alta" name="filtro-prioridade" value="alta">
+          <label for="prio-alta">Alta</label>
+        </fieldset>
+      </form>
+    </section>
+
+    <!-- Visão de Quadro (4 Status) -->
+    <section aria-labelledby="status-a-fazer-heading">
+      <h2 id="status-a-fazer-heading">A Fazer</h2>
+      <ul>
+        <li>
+          <article>
+            <h3>Modelagem do Banco de Dados</h3>
+            <p><strong>Projeto:</strong> Sistema de Biblioteca (PRJ-01)</p>
+            <p><strong>Responsável:</strong> Carlos Eduardo</p>
+            <p><strong>Prazo:</strong> <time datetime="2026-08-20">20/08/2026</time></p>
+            <p><strong>Prioridade:</strong> Alta</p>
+          </article>
+        </li>
+        <li>
+          <article>
+            <h3>Elaboração dos Diagramas UML</h3>
+            <p><strong>Projeto:</strong> Sistema de Biblioteca (PRJ-01)</p>
+            <p><strong>Responsável:</strong> Mariana Costa</p>
+            <p><strong>Prazo:</strong> <time datetime="2026-08-22">22/08/2026</time></p>
+            <p><strong>Prioridade:</strong> Média</p>
+          </article>
+        </li>
+      </ul>
+    </section>
+
+    <section aria-labelledby="status-em-andamento-heading">
+      <h2 id="status-em-andamento-heading">Em Andamento</h2>
+      <ul>
+        <li>
+          <article>
+            <h3>Desenvolvimento do HTML Semântico</h3>
+            <p><strong>Projeto:</strong> Gerenciador Acadêmico (PRJ-02)</p>
+            <p><strong>Responsável:</strong> Peutry</p>
+            <p><strong>Prazo:</strong> <time datetime="2026-08-11">11/08/2026</time></p>
+            <p><strong>Prioridade:</strong> Alta</p>
+          </article>
+        </li>
+        <li>
+          <article>
+            <h3>Pesquisa de Requisitos de Acessibilidade</h3>
+            <p><strong>Projeto:</strong> Gerenciador Acadêmico (PRJ-02)</p>
+            <p><strong>Responsável:</strong> Lucas Mendes</p>
+            <p><strong>Prazo:</strong> <time datetime="2026-08-14">14/08/2026</time></p>
+            <p><strong>Prioridade:</strong> Baixa</p>
+          </article>
+        </li>
+      </ul>
+    </section>
+
+    <section aria-labelledby="status-em-revisao-heading">
+      <h2 id="status-em-revisao-heading">Em Revisão</h2>
+      <ul>
+        <li>
+          <article>
+            <h3>Revisão de Validação do HTML W3C</h3>
+            <p><strong>Projeto:</strong> Gerenciador Acadêmico (PRJ-02)</p>
+            <p><strong>Responsável:</strong> Beatriz Lima</p>
+            <p><strong>Prazo:</strong> <time datetime="2026-08-12">12/08/2026</time></p>
+            <p><strong>Prioridade:</strong> Alta</p>
+          </article>
+        </li>
+        <li>
+          <article>
+            <h3>Documentação dos Casos de Uso</h3>
+            <p><strong>Projeto:</strong> Sistema de Biblioteca (PRJ-01)</p>
+            <p><strong>Responsável:</strong> Rafael Souza</p>
+            <p><strong>Prazo:</strong> <time datetime="2026-08-13">13/08/2026</time></p>
+            <p><strong>Prioridade:</strong> Média</p>
+          </article>
+        </li>
+      </ul>
+    </section>
+
+    <section aria-labelledby="status-concluida-heading">
+      <h2 id="status-concluida-heading">Concluída</h2>
+      <ul>
+        <li>
+          <article>
+            <h3>Configuração Inicial do Repositório Git</h3>
+            <p><strong>Projeto:</strong> Gerenciador Acadêmico (PRJ-02)</p>
+            <p><strong>Responsável:</strong>Peutry</p>
+            <p><strong>Prazo:</strong> <time datetime="2026-08-05">05/08/2026</time></p>
+            <p><strong>Prioridade:</strong> Média</p>
+          </article>
+        </li>
+        <li>
+          <article>
+            <h3>Definição do Tema do Projeto</h3>
+            <p><strong>Projeto:</strong> Sistema de Biblioteca (PRJ-01)</p>
+            <p><strong>Responsável:</strong> Fernanda Rocha</p>
+            <p><strong>Prazo:</strong> <time datetime="2026-08-01">01/08/2026</time></p>
+            <p><strong>Prioridade:</strong> Baixa</p>
+          </article>
+        </li>
+      </ul>
+    </section>
+  </main>
+
+  <footer>
+    <p>Desenvolvido por: <strong>Peutry</strong></p>
+    <p>Disciplina: Desenvolvimento Frontend — 2026.2</p>
+  </footer>
+
+</body>
+</html>
