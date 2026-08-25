@@ -1,0 +1,236 @@
+:root {
+  /* Cores de Superfície, Texto e Borda */
+  --color-bg: #f4f6f8;
+  --color-surface: #ffffff;
+  --color-text: #1f2937;
+  --color-text-muted: #4b5563;
+  --color-border: #d1d5db;
+  --color-focus: #2563eb;
+
+  /* Cores de Status */
+  --color-status-todo: #d97706;
+  --color-status-in-progress: #2563eb;
+  --color-status-review: #7c3aed;
+  --color-status-done: #059669;
+
+  /* Escala de Espaçamento (Rem) */
+  --space-sm: 0.5rem;   /* 8px */
+  --space-md: 1rem;     /* 16px */
+  --space-lg: 1.5rem;   /* 24px */
+
+  --radius: 0.5rem;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  line-height: 1.5;
+  padding: var(--space-md);
+}
+
+/* TIPOGRAFIA E USO DE CLAMP() */
+h1 {
+  /* clamp(minimo, preferido, maximo) - combina rem e vw */
+  font-size: clamp(1.4rem, 2.5vw + 1rem, 2.2rem);
+  text-align: center;
+  margin-bottom: var(--space-lg);
+  color: var(--color-text);
+}
+
+h2 {
+  font-size: 1.25rem;
+  margin-bottom: var(--space-sm);
+}
+
+:focus-visible {
+  outline: 3px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+.filters-section {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: var(--space-md);
+  margin-bottom: var(--space-lg);
+}
+
+.filters-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.form-group input[type="search"] {
+  min-height: 2.75rem; /* Alvo de toque >= 24px/44px */
+  padding: 0.5rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  font-size: 1rem;
+}
+
+.filter-group {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: var(--space-md);
+}
+
+.filter-group legend {
+  padding: 0 var(--space-sm);
+  font-weight: bold;
+}
+
+.radio-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-md);
+}
+
+/* Garantindo alvos de clique adequados (mínimo 24x24px) */
+.radio-options label {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.5rem;
+  padding: var(--space-sm);
+  cursor: pointer;
+}
+
+.radio-options input[type="radio"] {
+  width: 1.25rem;
+  height: 1.25rem;
+  margin-right: var(--space-sm);
+}
+
+/* QUADRO DE TAREFAS (GRID MOBILE-FIRST BASE) */
+/* Mobile-first: 1 coluna por padrao para telas de 320px */
+.board-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-lg);
+}
+
+/* Seções de Status usam Flexbox na vertical */
+.status-column {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: var(--space-md);
+  border-top: 5px solid var(--color-border);
+}
+
+/* Aplicando a cor individual de cada status nas colunas */
+.status-todo { border-top-color: var(--color-status-todo); }
+.status-in-progress { border-top-color: var(--color-status-in-progress); }
+.status-review { border-top-color: var(--color-status-review); }
+.status-done { border-top-color: var(--color-status-done); }
+
+.task-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  margin-top: var(--space-sm);
+}
+
+/* CARTÃO DE TAREFA (FLEXBOX INTERNO & TRUNCAMENTO) */
+.task-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  background-color: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: var(--space-md);
+  /* Crucial para que o min-width: 0 no titulo funcione em Flexbox */
+  min-width: 0;
+}
+
+/* Truncamento do Título Longo */
+.task-title {
+  font-size: 1.1rem;
+  color: var(--color-text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0; /* Impede o card de estourar a largura da coluna */
+}
+
+.card-footer {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  margin-top: auto; /* Empurra o prazo e prioridade para a base do cartão */
+  padding-top: var(--space-sm);
+  border-top: 1px dashed var(--color-border);
+}
+
+.priority {
+  display: inline-block;
+  font-size: 0.875rem;
+  font-weight: bold;
+}
+
+.due-date {
+  font-size: 0.875rem;
+  color: var(--color-text-muted);
+}
+
+/* RODAPÉ */
+.app-footer {
+  margin-top: var(--space-lg);
+  padding: var(--space-md);
+  text-align: center;
+  border-top: 1px solid var(--color-border);
+  font-size: 0.875rem;
+  color: var(--color-text-muted);
+}
+
+/* RESPONSIVIDADE */
+
+/* PONTO DE QUEBRA 1: 640px (Tablets / Telas intermediarias)
+   JUSTIFICATIVA: O espaco horizontal em 640px permite 2 colunas de status sem apertar o conteudo dos cartoes. */
+@media (min-width: 640px) {
+  .board-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .card-footer {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+}
+
+/* PONTO DE QUEBRA 2: 1024px (Desktops / Telas Largas)
+   JUSTIFICATIVA: Em 1024px, ha largura suficiente para exibir as 4 colunas de status lado a lado, formando a visao completa de quadro Kanban. */
+@media (min-width: 1024px) {
+  .board-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .filters-form {
+    flex-direction: row;
+    align-items: flex-start;
+  }
+
+  .form-group {
+    flex: 1;
+  }
+}
