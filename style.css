@@ -1,24 +1,20 @@
 :root {
-  /* Cores de Superfície, Texto e Borda */
-  --color-bg: #f4f6f8;
+  /* Cores Globais */
+  --color-bg: #f1f5f9;
   --color-surface: #ffffff;
-  --color-text: #1f2937;
-  --color-text-muted: #4b5563;
-  --color-border: #d1d5db;
+  --color-text: #0f172a;
+  --color-text-muted: #64748b;
+  --color-border: #e2e8f0;
   --color-focus: #2563eb;
 
-  /* Cores de Status */
-  --color-status-todo: #d97706;
-  --color-status-in-progress: #2563eb;
-  --color-status-review: #7c3aed;
-  --color-status-done: #059669;
+  /* Espaçamento Compacto */
+  --space-xs: 0.35rem;
+  --space-sm: 0.5rem;
+  --space-md: 0.85rem;
+  --space-lg: 1.25rem;
 
-  /* Escala de Espaçamento (Rem) */
-  --space-sm: 0.5rem;   /* 8px */
-  --space-md: 1rem;     /* 16px */
-  --space-lg: 1.5rem;   /* 24px */
-
-  --radius: 0.5rem;
+  --radius-sm: 0.375rem;
+  --radius-md: 0.6rem;
 }
 
 *,
@@ -33,204 +29,295 @@ body {
   font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   background-color: var(--color-bg);
   color: var(--color-text);
-  line-height: 1.5;
+  line-height: 1.4;
   padding: var(--space-md);
+  max-width: 1440px;
+  margin: 0 auto;
 }
 
-/* TIPOGRAFIA E USO DE CLAMP() */
+/* TIPOGRAFIA */
 h1 {
-  /* clamp(minimo, preferido, maximo) - combina rem e vw */
-  font-size: clamp(1.4rem, 2.5vw + 1rem, 2.2rem);
+  font-size: clamp(1.3rem, 2vw + 0.8rem, 1.8rem);
   text-align: center;
-  margin-bottom: var(--space-lg);
+  margin-bottom: var(--space-md);
   color: var(--color-text);
 }
 
-h2 {
-  font-size: 1.25rem;
-  margin-bottom: var(--space-sm);
-}
-
 :focus-visible {
-  outline: 3px solid var(--color-focus);
+  outline: 2px solid var(--color-focus);
   outline-offset: 2px;
 }
 
+/* FILTROS E BUSCA */
 .filters-section {
   background-color: var(--color-surface);
   border: 1px solid var(--color-border);
-  border-radius: var(--radius);
+  border-radius: var(--radius-md);
   padding: var(--space-md);
-  margin-bottom: var(--space-lg);
+  margin-bottom: var(--space-md);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+}
+
+.filters-section h2 {
+  font-size: 1rem;
+  margin-bottom: var(--space-xs);
 }
 
 .filters-form {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-md);
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-sm);
 }
 
 .form-group {
   display: flex;
   flex-direction: column;
-  gap: var(--space-sm);
+  gap: 0.25rem;
+}
+
+.form-group label {
+  font-weight: 600;
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
 }
 
 .form-group input[type="search"] {
-  min-height: 2.75rem; /* Alvo de toque >= 24px/44px */
-  padding: 0.5rem;
+  height: 2.2rem;
+  padding: 0.35rem 0.6rem;
   border: 1px solid var(--color-border);
-  border-radius: var(--radius);
-  font-size: 1rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.875rem;
+  background-color: var(--color-bg);
+  outline: none;
 }
 
 .filter-group {
   border: 1px solid var(--color-border);
-  border-radius: var(--radius);
-  padding: var(--space-md);
+  border-radius: var(--radius-sm);
+  padding: 0.5rem var(--space-sm);
 }
 
 .filter-group legend {
-  padding: 0 var(--space-sm);
-  font-weight: bold;
+  padding: 0 0.25rem;
+  font-size: 0.775rem;
+  font-weight: 600;
+  color: var(--color-text-muted);
 }
 
+/* RADIO CHIPS E PERSONALIZAÇÃO DAS BOLINHAS */
 .radio-options {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--space-md);
+  gap: 0.35rem;
 }
 
-/* Garantindo alvos de clique adequados (mínimo 24x24px) */
-.radio-options label {
+.radio-item {
   display: inline-flex;
   align-items: center;
-  min-height: 2.5rem;
-  padding: var(--space-sm);
+  gap: 0.4rem;
+  padding: 0.3rem 0.65rem;
+  border: 1px solid var(--color-border);
+  border-radius: 16px;
+  font-size: 0.8rem;
   cursor: pointer;
+  background-color: #ffffff;
+  color: var(--color-text);
+  transition: all 0.2s ease-in-out;
+  user-select: none;
 }
 
-.radio-options input[type="radio"] {
-  width: 1.25rem;
-  height: 1.25rem;
-  margin-right: var(--space-sm);
+.radio-item:hover {
+  background-color: #f8fafc;
+  border-color: #cbd5e1;
 }
 
-/* QUADRO DE TAREFAS (GRID MOBILE-FIRST BASE) */
-/* Mobile-first: 1 coluna por padrao para telas de 320px */
+.radio-item:has(input:checked) {
+  font-weight: 600;
+  background-color: #ffffff;
+}
+
+.radio-item input[type="radio"] {
+  width: 0.95rem;
+  height: 0.95rem;
+  cursor: pointer;
+  accent-color: var(--color-focus);
+}
+
+/* CORES DAS BOLINHAS DE STATUS (CORRESPONDENTES AOS CARDS) */
+#status-a-fazer { accent-color: #ef4444; }       /* Vermelho / Coral */
+#status-em-andamento { accent-color: #e4e00c; }  /* Verde Água / Teal */
+#status-em-revisao { accent-color: #8b5cf6; }    /* Roxo */
+#status-concluida { accent-color: #25bd5f; }     /* Rosa / Magenta */
+
+.radio-item:has(#status-a-fazer:checked) { border-color: #ef4444; }
+.radio-item:has(#status-em-andamento:checked) { border-color: #e5e213; }
+.radio-item:has(#status-em-revisao:checked) { border-color: #8b5cf6; }
+.radio-item:has(#status-concluida:checked) { border-color: #25bd5f; }
+
+/* CORES DAS BOLINHAS DE PRIORIDADE */
+#prio-baixa { accent-color: #1390dd; }   /* Verde */
+#prio-media { accent-color: #d97706; }   /* Amarelo / Laranja */
+#prio-alta { accent-color: #dc2626; }    /* Vermelho */
+
+.radio-item:has(#prio-baixa:checked) { border-color: #1390dd; }
+.radio-item:has(#prio-media:checked) { border-color: #d97706; }
+.radio-item:has(#prio-alta:checked) { border-color: #dc2626; }
+
+/* ESTRUTURA DO QUADRO KANBAN */
 .board-grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: var(--space-lg);
+  gap: var(--space-md);
+  align-items: start;
 }
 
-/* Seções de Status usam Flexbox na vertical */
 .status-column {
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  border: 1px solid var(--color-border);
   display: flex;
   flex-direction: column;
-  background-color: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius);
-  padding: var(--space-md);
-  border-top: 5px solid var(--color-border);
+  min-height: 450px;
 }
 
-/* Aplicando a cor individual de cada status nas colunas */
-.status-todo { border-top-color: var(--color-status-todo); }
-.status-in-progress { border-top-color: var(--color-status-in-progress); }
-.status-review { border-top-color: var(--color-status-review); }
-.status-done { border-top-color: var(--color-status-done); }
+/* PALETA DE CORES POR COLUNA */
+.status-todo {
+  background-color: #fff5f5;
+  border-color: #fecaca;
+}
+.status-todo .column-header { background-color: #ef4444; }
 
+.status-in-progress {
+  background-color: #fdfdf0;
+  border-color: #f0f699;
+}
+.status-in-progress .column-header { background-color: #f1d32b; }
+
+.status-review {
+  background-color: #f5f3ff;
+  border-color: #ddd6fe;
+}
+.status-review .column-header { background-color: #8b5cf6; }
+
+.status-done {
+  background-color: #f2fdf3;
+  border-color: #cffbd2;
+}
+.status-done .column-header { background-color: #25bd5f; }
+
+/* CABEÇALHO DA COLUNA */
+.column-header {
+  color: #ffffff;
+  padding: 0.75rem var(--space-md);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.column-header h2 {
+  font-size: 0.95rem;
+  font-weight: 700;
+  margin: 0;
+  color: #ffffff;
+}
+
+.task-count {
+  background-color: rgba(255, 255, 255, 0.25);
+  color: #ffffff;
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 0.15rem 0.5rem;
+  border-radius: 10px;
+}
+
+/* LISTA E CARTÕES DE TAREFA */
 .task-list {
   list-style: none;
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-md);
-  margin-top: var(--space-sm);
-}
-
-/* CARTÃO DE TAREFA (FLEXBOX INTERNO & TRUNCAMENTO) */
-.task-card {
+  padding: var(--space-sm);
   display: flex;
   flex-direction: column;
   gap: var(--space-sm);
-  background-color: var(--color-bg);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius);
-  padding: var(--space-md);
-  /* Crucial para que o min-width: 0 no titulo funcione em Flexbox */
-  min-width: 0;
 }
 
-/* Truncamento do Título Longo */
+.task-card {
+  background-color: #ffffff;
+  border-radius: var(--radius-sm);
+  padding: 0.75rem;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
 .task-title {
-  font-size: 1.1rem;
+  font-size: 0.875rem;
+  font-weight: 700;
   color: var(--color-text);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  min-width: 0; /* Impede o card de estourar a largura da coluna */
+  line-height: 1.3;
+}
+
+.project-info,
+.assignee-info {
+  font-size: 0.775rem;
+  color: var(--color-text-muted);
 }
 
 .card-footer {
   display: flex;
-  flex-direction: column;
-  gap: var(--space-sm);
-  margin-top: auto; /* Empurra o prazo e prioridade para a base do cartão */
-  padding-top: var(--space-sm);
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 0.25rem;
+  padding-top: 0.4rem;
   border-top: 1px dashed var(--color-border);
 }
 
 .priority {
-  display: inline-block;
-  font-size: 0.875rem;
-  font-weight: bold;
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 0.15rem 0.45rem;
+  border-radius: 4px;
+}
+
+.priority-alta {
+  background-color: #fef2f2;
+  color: #d41818;
+}
+
+.priority-media {
+  background-color: #fffbebfb;
+  color: #d97706;
+}
+
+.priority-baixa {
+  background-color: #f0f8fd;
+  color: #1390dd;
 }
 
 .due-date {
-  font-size: 0.875rem;
+  font-size: 0.75rem;
   color: var(--color-text-muted);
 }
 
 /* RODAPÉ */
 .app-footer {
   margin-top: var(--space-lg);
-  padding: var(--space-md);
+  padding: var(--space-sm);
   text-align: center;
   border-top: 1px solid var(--color-border);
-  font-size: 0.875rem;
+  font-size: 0.8rem;
   color: var(--color-text-muted);
 }
 
-/* RESPONSIVIDADE */
-
-/* PONTO DE QUEBRA 1: 640px (Tablets / Telas intermediarias)
-   JUSTIFICATIVA: O espaco horizontal em 640px permite 2 colunas de status sem apertar o conteudo dos cartoes. */
-@media (min-width: 640px) {
-  .board-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  .card-footer {
-    flex-direction: row;
-    justify-content: space-between;
+/* RESPONSIVIDADE DESKTOP */
+@media (min-width: 1024px) {
+  .filters-form {
+    grid-template-columns: 1.2fr 2fr 1.5fr;
     align-items: center;
   }
-}
 
-/* PONTO DE QUEBRA 2: 1024px (Desktops / Telas Largas)
-   JUSTIFICATIVA: Em 1024px, ha largura suficiente para exibir as 4 colunas de status lado a lado, formando a visao completa de quadro Kanban. */
-@media (min-width: 1024px) {
   .board-grid {
     grid-template-columns: repeat(4, 1fr);
-  }
-
-  .filters-form {
-    flex-direction: row;
-    align-items: flex-start;
-  }
-
-  .form-group {
-    flex: 1;
+    gap: 0.75rem;
   }
 }
