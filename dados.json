@@ -1,0 +1,60 @@
+{
+  "tarefas": [
+    {
+      "id": 1,
+      "titulo": "Modelagem de Banco de Dados Relacional",
+      "status": "a-fazer",
+      "prioridade": "alta",
+      "prazo": "2026-08-20"
+    },
+    {
+      "id": 2,
+      "titulo": "Elaboração dos Diagramas UML",
+      "status": "a-fazer",
+      "prioridade": "media",
+      "prazo": "2026-08-22"
+    },
+    {
+      "id": 3,
+      "titulo": "Desenvolvimento do HTML Semântico",
+      "status": "em-andamento",
+      "prioridade": "alta",
+      "prazo": "2026-08-11"
+    },
+    {
+      "id": 4,
+      "titulo": "Pesquisa de Requisitos de Acessibilidade",
+      "status": "em-andamento",
+      "prioridade": "baixa",
+      "prazo": "2026-08-14"
+    },
+    {
+      "id": 5,
+      "titulo": "Revisão de Validação do HTML W3C",
+      "status": "em-revisao",
+      "prioridade": "alta",
+      "prazo": "2026-08-12"
+    },
+    {
+      "id": 6,
+      "titulo": "Documentação dos Casos de Uso",
+      "status": "em-revisao",
+      "prioridade": "media",
+      "prazo": "2026-08-13"
+    },
+    {
+      "id": 7,
+      "titulo": "Configuração Inicial do Repositório Git",
+      "status": "concluida",
+      "prioridade": "media",
+      "prazo": "2026-08-05"
+    },
+    {
+      "id": 8,
+      "titulo": "Definição do Tema do Projeto",
+      "status": "concluida",
+      "prioridade": "baixa",
+      "prazo": "2026-08-01"
+    }
+  ]
+}
