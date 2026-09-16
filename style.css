@@ -1,13 +1,31 @@
 :root {
-  /* Cores Globais */
-  --color-bg: #f1f5f9;
+  /* Superfícies e texto */
+  --color-bg: #f4f5f7;
   --color-surface: #ffffff;
-  --color-text: #0f172a;
-  --color-text-muted: #64748b;
-  --color-border: #e2e8f0;
+  --color-surface-alt: #fafbfc;
+  --color-text: #1a1d24;
+  --color-text-muted: #5a6472;
+  --color-border: #dfe3e8;
   --color-focus: #2563eb;
 
-  /* Espaçamento Compacto */
+  /* Uma cor por status (tom escuro: usado em texto e na barra de acento) */
+  --status-a-fazer: #b4433a;
+  --status-em-andamento: #8a6100;
+  --status-em-revisao: #6b3fc4;
+  --status-concluida: #1d7a46;
+
+  /* Fundo claro correspondente a cada status */
+  --status-a-fazer-bg: #fdf3f2;
+  --status-em-andamento-bg: #fdf8ec;
+  --status-em-revisao-bg: #f6f3fd;
+  --status-concluida-bg: #eff9f3;
+
+  /* Uma cor por prioridade */
+  --prio-alta: #b4433a;
+  --prio-media: #8a6100;
+  --prio-baixa: #1a6fa8;
+
+  /* Escala de espaçamento */
   --space-xs: 0.35rem;
   --space-sm: 0.5rem;
   --space-md: 0.85rem;
@@ -29,7 +47,7 @@ body {
   font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   background-color: var(--color-bg);
   color: var(--color-text);
-  line-height: 1.4;
+  line-height: 1.45;
   padding: var(--space-md);
   max-width: 1440px;
   margin: 0 auto;
@@ -41,11 +59,22 @@ h1 {
   text-align: center;
   margin-bottom: var(--space-md);
   color: var(--color-text);
+  letter-spacing: -0.015em;
 }
 
 :focus-visible {
   outline: 2px solid var(--color-focus);
   outline-offset: 2px;
+}
+
+/* REGIÃO DE STATUS / RESULTADOS */
+.status-regiao {
+  min-height: 1.5rem;
+  margin-bottom: var(--space-sm);
+  padding: var(--space-xs) var(--space-sm);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-text-muted);
 }
 
 /* FILTROS E BUSCA */
@@ -55,12 +84,11 @@ h1 {
   border-radius: var(--radius-md);
   padding: var(--space-md);
   margin-bottom: var(--space-md);
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
 }
 
 .filters-section h2 {
   font-size: 1rem;
-  margin-bottom: var(--space-xs);
+  margin-bottom: var(--space-sm);
 }
 
 .filters-form {
@@ -81,14 +109,36 @@ h1 {
   color: var(--color-text-muted);
 }
 
-.form-group input[type="search"] {
-  height: 2.2rem;
+.form-group input[type="search"],
+.form-group select {
+  min-height: 2.75rem;
   padding: 0.35rem 0.6rem;
   border: 1px solid var(--color-border);
   border-radius: var(--radius-sm);
   font-size: 0.875rem;
-  background-color: var(--color-bg);
-  outline: none;
+  background-color: var(--color-surface-alt);
+  color: var(--color-text);
+}
+
+.form-group-acoes {
+  justify-content: flex-end;
+}
+
+.btn-limpar {
+  min-height: 2.75rem;
+  min-width: 2.75rem;
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background-color: var(--color-surface);
+  color: var(--color-text);
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.btn-limpar:hover {
+  background-color: #eceff3;
 }
 
 .filter-group {
@@ -104,7 +154,7 @@ h1 {
   color: var(--color-text-muted);
 }
 
-/* RADIO CHIPS E PERSONALIZAÇÃO DAS BOLINHAS */
+/* OPÇÕES DE FILTRO */
 .radio-options {
   display: flex;
   flex-wrap: wrap;
@@ -115,25 +165,26 @@ h1 {
   display: inline-flex;
   align-items: center;
   gap: 0.4rem;
+  min-height: 2rem;
   padding: 0.3rem 0.65rem;
   border: 1px solid var(--color-border);
   border-radius: 16px;
   font-size: 0.8rem;
   cursor: pointer;
-  background-color: #ffffff;
+  background-color: var(--color-surface);
   color: var(--color-text);
-  transition: all 0.2s ease-in-out;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
   user-select: none;
 }
 
 .radio-item:hover {
-  background-color: #f8fafc;
-  border-color: #cbd5e1;
+  background-color: var(--color-surface-alt);
+  border-color: #c4cad2;
 }
 
 .radio-item:has(input:checked) {
   font-weight: 600;
-  background-color: #ffffff;
+  background-color: var(--color-surface-alt);
 }
 
 .radio-item input[type="radio"] {
@@ -143,27 +194,26 @@ h1 {
   accent-color: var(--color-focus);
 }
 
-/* CORES DAS BOLINHAS DE STATUS (CORRESPONDENTES AOS CARDS) */
-#status-a-fazer { accent-color: #ef4444; }       /* Vermelho / Coral */
-#status-em-andamento { accent-color: #e4e00c; }  /* Verde Água / Teal */
-#status-em-revisao { accent-color: #8b5cf6; }    /* Roxo */
-#status-concluida { accent-color: #25bd5f; }     /* Rosa / Magenta */
+/* Cada bolinha e borda vem da propriedade personalizada do status */
+#status-a-fazer { accent-color: var(--status-a-fazer); }
+#status-em-andamento { accent-color: var(--status-em-andamento); }
+#status-em-revisao { accent-color: var(--status-em-revisao); }
+#status-concluida { accent-color: var(--status-concluida); }
 
-.radio-item:has(#status-a-fazer:checked) { border-color: #ef4444; }
-.radio-item:has(#status-em-andamento:checked) { border-color: #e5e213; }
-.radio-item:has(#status-em-revisao:checked) { border-color: #8b5cf6; }
-.radio-item:has(#status-concluida:checked) { border-color: #25bd5f; }
+.radio-item:has(#status-a-fazer:checked) { border-color: var(--status-a-fazer); }
+.radio-item:has(#status-em-andamento:checked) { border-color: var(--status-em-andamento); }
+.radio-item:has(#status-em-revisao:checked) { border-color: var(--status-em-revisao); }
+.radio-item:has(#status-concluida:checked) { border-color: var(--status-concluida); }
 
-/* CORES DAS BOLINHAS DE PRIORIDADE */
-#prio-baixa { accent-color: #1390dd; }   /* Verde */
-#prio-media { accent-color: #d97706; }   /* Amarelo / Laranja */
-#prio-alta { accent-color: #dc2626; }    /* Vermelho */
+#prio-baixa { accent-color: var(--prio-baixa); }
+#prio-media { accent-color: var(--prio-media); }
+#prio-alta { accent-color: var(--prio-alta); }
 
-.radio-item:has(#prio-baixa:checked) { border-color: #1390dd; }
-.radio-item:has(#prio-media:checked) { border-color: #d97706; }
-.radio-item:has(#prio-alta:checked) { border-color: #dc2626; }
+.radio-item:has(#prio-baixa:checked) { border-color: var(--prio-baixa); }
+.radio-item:has(#prio-media:checked) { border-color: var(--prio-media); }
+.radio-item:has(#prio-alta:checked) { border-color: var(--prio-alta); }
 
-/* ESTRUTURA DO QUADRO KANBAN */
+/* QUADRO */
 .board-grid {
   display: grid;
   grid-template-columns: 1fr;
@@ -175,79 +225,90 @@ h1 {
   border-radius: var(--radius-md);
   overflow: hidden;
   border: 1px solid var(--color-border);
+  background-color: var(--color-surface-alt);
   display: flex;
   flex-direction: column;
-  min-height: 450px;
+  min-width: 0;
+  min-height: 12rem;
 }
 
-/* PALETA DE CORES POR COLUNA */
-.status-todo {
-  background-color: #fff5f5;
-  border-color: #fecaca;
+/* A cor do status entra como barra de acento no topo, não como bloco */
+.status-column .column-header {
+  border-top: 3px solid var(--cor-status);
 }
-.status-todo .column-header { background-color: #ef4444; }
+
+.status-column .column-header h2,
+.status-column .task-count {
+  color: var(--cor-status);
+}
+
+.status-todo {
+  --cor-status: var(--status-a-fazer);
+}
+.status-todo .column-header { background-color: var(--status-a-fazer-bg); }
 
 .status-in-progress {
-  background-color: #fdfdf0;
-  border-color: #f0f699;
+  --cor-status: var(--status-em-andamento);
 }
-.status-in-progress .column-header { background-color: #f1d32b; }
+.status-in-progress .column-header { background-color: var(--status-em-andamento-bg); }
 
 .status-review {
-  background-color: #f5f3ff;
-  border-color: #ddd6fe;
+  --cor-status: var(--status-em-revisao);
 }
-.status-review .column-header { background-color: #8b5cf6; }
+.status-review .column-header { background-color: var(--status-em-revisao-bg); }
 
 .status-done {
-  background-color: #f2fdf3;
-  border-color: #cffbd2;
+  --cor-status: var(--status-concluida);
 }
-.status-done .column-header { background-color: #25bd5f; }
+.status-done .column-header { background-color: var(--status-concluida-bg); }
 
 /* CABEÇALHO DA COLUNA */
 .column-header {
-  color: #ffffff;
-  padding: 0.75rem var(--space-md);
+  padding: 0.7rem var(--space-md);
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: var(--space-sm);
+  border-bottom: 1px solid var(--color-border);
 }
 
 .column-header h2 {
-  font-size: 0.95rem;
+  font-size: 0.85rem;
   font-weight: 700;
   margin: 0;
-  color: #ffffff;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
 }
 
 .task-count {
-  background-color: rgba(255, 255, 255, 0.25);
-  color: #ffffff;
-  font-size: 0.75rem;
+  background-color: var(--color-surface);
+  border: 1px solid currentColor;
+  font-size: 0.7rem;
   font-weight: 700;
-  padding: 0.15rem 0.5rem;
+  padding: 0.1rem 0.45rem;
   border-radius: 10px;
 }
 
-/* LISTA E CARTÕES DE TAREFA */
+/* LISTA E CARTÕES */
 .task-list {
   list-style: none;
   padding: var(--space-sm);
   display: flex;
   flex-direction: column;
   gap: var(--space-sm);
+  min-width: 0;
 }
 
 .task-card {
-  background-color: #ffffff;
+  background-color: var(--color-surface);
   border-radius: var(--radius-sm);
   padding: 0.75rem;
-  border: 1px solid rgba(0, 0, 0, 0.06);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  border: 1px solid var(--color-border);
+  box-shadow: 0 1px 2px rgba(16, 24, 40, 0.05);
   display: flex;
   flex-direction: column;
   gap: 0.4rem;
+  min-width: 0;
 }
 
 .task-title {
@@ -255,6 +316,10 @@ h1 {
   font-weight: 700;
   color: var(--color-text);
   line-height: 1.3;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .project-info,
@@ -267,9 +332,11 @@ h1 {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: var(--space-sm);
+  min-width: 0;
   margin-top: 0.25rem;
   padding-top: 0.4rem;
-  border-top: 1px dashed var(--color-border);
+  border-top: 1px solid var(--color-border);
 }
 
 .priority {
@@ -277,26 +344,28 @@ h1 {
   font-weight: 700;
   padding: 0.15rem 0.45rem;
   border-radius: 4px;
+  white-space: nowrap;
 }
 
 .priority-alta {
-  background-color: #fef2f2;
-  color: #d41818;
+  background-color: var(--status-a-fazer-bg);
+  color: var(--prio-alta);
 }
 
 .priority-media {
-  background-color: #fffbebfb;
-  color: #d97706;
+  background-color: var(--status-em-andamento-bg);
+  color: var(--prio-media);
 }
 
 .priority-baixa {
-  background-color: #f0f8fd;
-  color: #1390dd;
+  background-color: #eff6fb;
+  color: var(--prio-baixa);
 }
 
 .due-date {
   font-size: 0.75rem;
   color: var(--color-text-muted);
+  white-space: nowrap;
 }
 
 /* RODAPÉ */
@@ -309,15 +378,104 @@ h1 {
   color: var(--color-text-muted);
 }
 
-/* RESPONSIVIDADE DESKTOP */
+/* Ponto de quebra: a partir daqui cabem os cinco controles de filtro
+   lado a lado sem que os rótulos quebrem em duas linhas, e as quatro
+   colunas do quadro convivem sem apertar o título dos cartões. */
 @media (min-width: 1024px) {
   .filters-form {
-    grid-template-columns: 1.2fr 2fr 1.5fr;
-    align-items: center;
+    grid-template-columns: 1.2fr 2fr 1.5fr 1.2fr auto;
+    align-items: end;
   }
 
   .board-grid {
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: 0.75rem;
+  }
+}
+
+/* ===== BOTÃO DE DETALHES NO CARTÃO ===== */
+.btn-detalhes {
+  align-self: flex-start;
+  min-height: 1.75rem;
+  margin-top: 0.15rem;
+  padding: 0.25rem 0.6rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background-color: var(--color-surface-alt);
+  color: var(--color-text-muted);
+  font-size: 0.72rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.btn-detalhes:hover {
+  background-color: #eceff3;
+  color: var(--color-text);
+  border-color: #c4cad2;
+}
+
+/* ===== FICHA DE DETALHES (dialog) ===== */
+.dialogo {
+  width: min(32rem, calc(100vw - 2rem));
+  padding: 0;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background-color: var(--color-surface);
+  color: var(--color-text);
+}
+
+.dialogo::backdrop {
+  background-color: rgba(15, 23, 42, 0.45);
+}
+
+.dialogo-conteudo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  padding: var(--space-lg);
+}
+
+.dialogo-titulo {
+  font-size: 1.05rem;
+  line-height: 1.3;
+  padding-bottom: var(--space-sm);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.dialogo-lista {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-sm);
+  font-size: 0.85rem;
+}
+
+.dialogo-lista dt {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--color-text-muted);
+}
+
+.dialogo-lista dd {
+  margin-bottom: var(--space-xs);
+}
+
+.dialogo-acoes {
+  display: flex;
+  justify-content: flex-end;
+}
+
+/* Ponto de quebra: a partir daqui a ficha tem largura suficiente para
+   exibir rótulo e valor lado a lado sem que os valores quebrem linha. */
+@media (min-width: 30rem) {
+  .dialogo-lista {
+    grid-template-columns: 9rem 1fr;
+    gap: var(--space-xs) var(--space-md);
+    align-items: baseline;
+  }
+
+  .dialogo-lista dd {
+    margin-bottom: 0;
   }
 }
