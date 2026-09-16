@@ -13,12 +13,13 @@
   </header>
 
   <main class="app-main">
-    <!-- Região de status para Leitores de Tela -->
+    <!-- Região de status/resultados: existe desde o início e está vazia -->
     <div id="regiao-status" role="status" aria-live="polite" class="status-regiao"></div>
+
     <!-- Região de Busca e Filtros -->
     <section class="filters-section" aria-labelledby="titulo-filtros">
       <h2 id="titulo-filtros">Filtros e Busca</h2>
-      
+
       <form class="filters-form" role="search">
         <div class="form-group">
           <label for="busca-titulo">Buscar por título da tarefa:</label>
@@ -79,145 +80,98 @@
             </label>
           </div>
         </fieldset>
+
+        <div class="form-group">
+          <label for="ordenacao-prazo">Ordenar por prazo:</label>
+          <select id="ordenacao-prazo" name="ordenacao-prazo">
+            <option value="padrao">Ordem original</option>
+            <option value="prazo-asc">Prazo mais próximo primeiro</option>
+            <option value="prazo-desc">Prazo mais distante primeiro</option>
+          </select>
+        </div>
+
+        <div class="form-group form-group-acoes">
+          <button type="button" id="limpar-filtros" class="btn-limpar">Limpar filtros</button>
+        </div>
       </form>
     </section>
 
-    <!-- Quadro Kanban em 4 Colunas -->
+    <!-- Quadro Kanban em 4 Colunas: os cartões são inseridos por JavaScript -->
     <div class="board-grid">
       <!-- Coluna: A Fazer -->
       <section class="status-column status-todo" aria-labelledby="status-a-fazer-heading">
         <header class="column-header">
           <h2 id="status-a-fazer-heading">A Fazer</h2>
-          <span class="task-count">2</span>
+          <span class="task-count">0</span>
         </header>
-        <ul class="task-list">
-          <li>
-            <article class="task-card">
-              <h3 class="task-title">Modelagem de Banco de Dados Relacional Avançado</h3>
-              <p class="project-info"><strong>Projeto:</strong> Sistema de Biblioteca (PRJ-01)</p>
-              <p class="assignee-info"><strong>Responsável:</strong> Carlos Eduardo</p>
-              <div class="card-footer">
-                <span class="priority priority-alta">Prioridade: Alta</span>
-                <p class="due-date"><time datetime="2026-08-20">20/08/2026</time></p>
-              </div>
-            </article>
-          </li>
-          <li>
-            <article class="task-card">
-              <h3 class="task-title">Elaboração dos Diagramas UML</h3>
-              <p class="project-info"><strong>Projeto:</strong> Sistema de Biblioteca (PRJ-01)</p>
-              <p class="assignee-info"><strong>Responsável:</strong> Mariana Costa</p>
-              <div class="card-footer">
-                <span class="priority priority-media">Prioridade: Média</span>
-                <p class="due-date"><time datetime="2026-08-22">22/08/2026</time></p>
-              </div>
-            </article>
-          </li>
-        </ul>
+        <ul class="task-list"></ul>
       </section>
 
       <!-- Coluna: Em Andamento -->
       <section class="status-column status-in-progress" aria-labelledby="status-em-andamento-heading">
         <header class="column-header">
           <h2 id="status-em-andamento-heading">Em Andamento</h2>
-          <span class="task-count">2</span>
+          <span class="task-count">0</span>
         </header>
-        <ul class="task-list">
-          <li>
-            <article class="task-card">
-              <h3 class="task-title">Desenvolvimento do HTML Semântico e Estruturação Responsiva</h3>
-              <p class="project-info"><strong>Projeto:</strong> Gerenciador Acadêmico (PRJ-02)</p>
-              <p class="assignee-info"><strong>Responsável:</strong> Peutry Lima</p>
-              <div class="card-footer">
-                <span class="priority priority-alta">Prioridade: Alta</span>
-                <p class="due-date"><time datetime="2026-08-11">11/08/2026</time></p>
-              </div>
-            </article>
-          </li>
-          <li>
-            <article class="task-card">
-              <h3 class="task-title">Pesquisa de Requisitos de Acessibilidade</h3>
-              <p class="project-info"><strong>Projeto:</strong> Gerenciador Acadêmico (PRJ-02)</p>
-              <p class="assignee-info"><strong>Responsável:</strong> Lucas Mendes</p>
-              <div class="card-footer">
-                <span class="priority priority-baixa">Prioridade: Baixa</span>
-                <p class="due-date"><time datetime="2026-08-14">14/08/2026</time></p>
-              </div>
-            </article>
-          </li>
-        </ul>
+        <ul class="task-list"></ul>
       </section>
 
       <!-- Coluna: Em Revisão -->
       <section class="status-column status-review" aria-labelledby="status-em-revisao-heading">
         <header class="column-header">
           <h2 id="status-em-revisao-heading">Em Revisão</h2>
-          <span class="task-count">2</span>
+          <span class="task-count">0</span>
         </header>
-        <ul class="task-list">
-          <li>
-            <article class="task-card">
-              <h3 class="task-title">Revisão de Validação do HTML W3C</h3>
-              <p class="project-info"><strong>Projeto:</strong> Gerenciador Acadêmico (PRJ-02)</p>
-              <p class="assignee-info"><strong>Responsável:</strong> Beatriz Lima</p>
-              <div class="card-footer">
-                <span class="priority priority-alta">Prioridade: Alta</span>
-                <p class="due-date"><time datetime="2026-08-12">12/08/2026</time></p>
-              </div>
-            </article>
-          </li>
-          <li>
-            <article class="task-card">
-              <h3 class="task-title">Documentação dos Casos de Uso</h3>
-              <p class="project-info"><strong>Projeto:</strong> Sistema de Biblioteca (PRJ-01)</p>
-              <p class="assignee-info"><strong>Responsável:</strong> Rafael Souza</p>
-              <div class="card-footer">
-                <span class="priority priority-media">Prioridade: Média</span>
-                <p class="due-date"><time datetime="2026-08-13">13/08/2026</time></p>
-              </div>
-            </article>
-          </li>
-        </ul>
+        <ul class="task-list"></ul>
       </section>
 
       <!-- Coluna: Concluída -->
       <section class="status-column status-done" aria-labelledby="status-concluida-heading">
         <header class="column-header">
           <h2 id="status-concluida-heading">Concluída</h2>
-          <span class="task-count">2</span>
+          <span class="task-count">0</span>
         </header>
-        <ul class="task-list">
-          <li>
-            <article class="task-card">
-              <h3 class="task-title">Configuração Inicial do Repositório Git</h3>
-              <p class="project-info"><strong>Projeto:</strong> Gerenciador Acadêmico (PRJ-02)</p>
-              <p class="assignee-info"><strong>Responsável:</strong> Peutry Lima</p>
-              <div class="card-footer">
-                <span class="priority priority-media">Prioridade: Média</span>
-                <p class="due-date"><time datetime="2026-08-05">05/08/2026</time></p>
-              </div>
-            </article>
-          </li>
-          <li>
-            <article class="task-card">
-              <h3 class="task-title">Definição do Tema do Projeto</h3>
-              <p class="project-info"><strong>Projeto:</strong> Sistema de Biblioteca (PRJ-01)</p>
-              <p class="assignee-info"><strong>Responsável:</strong> Fernanda Rocha</p>
-              <div class="card-footer">
-                <span class="priority priority-baixa">Prioridade: Baixa</span>
-                <p class="due-date"><time datetime="2026-08-01">01/08/2026</time></p>
-              </div>
-            </article>
-          </li>
-        </ul>
+        <ul class="task-list"></ul>
       </section>
     </div>
   </main>
+
+  <!-- Detalhes da tarefa: existe vazio na marcação e é preenchido por JavaScript -->
+  <dialog id="dialogo-tarefa" class="dialogo" aria-labelledby="dialogo-titulo">
+    <div class="dialogo-conteudo">
+      <h2 id="dialogo-titulo" class="dialogo-titulo"></h2>
+
+      <dl class="dialogo-lista">
+        <dt>Projeto</dt>
+        <dd id="detalhe-projeto"></dd>
+
+        <dt>Responsável</dt>
+        <dd id="detalhe-responsavel"></dd>
+
+        <dt>Status</dt>
+        <dd id="detalhe-status"></dd>
+
+        <dt>Prioridade</dt>
+        <dd id="detalhe-prioridade"></dd>
+
+        <dt>Prazo</dt>
+        <dd id="detalhe-prazo"></dd>
+
+        <dt>Descrição</dt>
+        <dd id="detalhe-descricao"></dd>
+      </dl>
+
+      <div class="dialogo-acoes">
+        <button type="button" id="fechar-dialogo" class="btn-limpar">Fechar</button>
+      </div>
+    </div>
+  </dialog>
 
   <footer class="app-footer">
     <p>Desenvolvido por: <strong>Peutry de Lima Silva</strong></p>
     <p>Disciplina: Desenvolvimento Frontend — 2026.2</p>
   </footer>
+
   <script type="module" src="js/app.js"></script>
 </body>
 </html>
