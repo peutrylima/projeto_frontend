@@ -3,9 +3,9 @@
     {
       "id": 1,
       "titulo": "Modelagem de Banco de Dados Relacional",
-      "projeto": "Campanha do Cálice de Dados",
-      "responsavel": "Mago Alatar",
-      "descricao": "Os antigos registros da biblioteca de Alexandria precisam ser organizados em tabelas arcanas relacionais para fácil acesso do conselho. Não esqueça de definir as chaves estrangeiras como selos de proteção.",
+      "projeto": "Clã Fúria de Ferro",
+      "responsavel": "Mago Real",
+      "descricao": "O Mago Real precisa reorganizar o Depósito de Recursos: cada tabela guarda um tipo de saque, e as chaves estrangeiras funcionam como muralhas entre os cofres.",
       "status": "a-fazer",
       "prioridade": "alta",
       "prazo": "2026-08-20"
@@ -13,9 +13,9 @@
     {
       "id": 2,
       "titulo": "Elaboração dos Diagramas UML",
-      "projeto": "A Visão Estrutural",
-      "responsavel": "Arquiteta Elara",
-      "descricao": "Desenhe os mapas estruturais (UML) do nosso novo artefato antes que os artífices comecem a codificar. Sem um mapa claro, a guilda pode se perder no labirinto do código.",
+      "projeto": "Clã Fúria de Ferro",
+      "responsavel": "Arqueira Rainha",
+      "descricao": "Antes de qualquer construtor erguer uma torre, a Arqueira Rainha exige o mapa completo da base: diagramas de classes e de sequência de cada ataque.",
       "status": "a-fazer",
       "prioridade": "media",
       "prazo": "2026-08-22"
@@ -23,9 +23,9 @@
     {
       "id": 3,
       "titulo": "Desenvolvimento do HTML Semântico",
-      "projeto": "A Fundação da Teia",
-      "responsavel": "Kael, o Construtor",
-      "descricao": "A fundação do nosso pergaminho web deve seguir as leis arcanas da semântica. Use as tags corretas (header, nav, main, footer) para afastar os espíritos da desorganização e agradar os deuses buscadores.",
+      "projeto": "Clã Muralha de Pedra",
+      "responsavel": "Bárbaro Chefe",
+      "descricao": "O Bárbaro Chefe está erguendo as muralhas semânticas da vila: cada tag no lugar certo, pronta para resistir a qualquer ataque de robôs de busca.",
       "status": "em-andamento",
       "prioridade": "alta",
       "prazo": "2026-08-11"
@@ -33,9 +33,9 @@
     {
       "id": 4,
       "titulo": "Pesquisa de Requisitos de Acessibilidade",
-      "projeto": "Inclusão Universal",
-      "responsavel": "Clériga Lumis",
-      "descricao": "É lei na guilda garantir que todos os habitantes do reino, independente de suas limitações ou maldições, possam navegar pelas runas do nosso sistema. Encontre as diretrizes WCAG necessárias.",
+      "projeto": "Clã Muralha de Pedra",
+      "responsavel": "Curandeira",
+      "descricao": "A Curandeira insiste que nenhum membro do clã fique para trás: pesquisar as diretrizes de acessibilidade garante que todos consigam navegar pela vila.",
       "status": "em-andamento",
       "prioridade": "baixa",
       "prazo": "2026-08-14"
@@ -43,9 +43,9 @@
     {
       "id": 5,
       "titulo": "Revisão de Validação do HTML W3C",
-      "projeto": "O Julgamento dos Sábios W3C",
-      "responsavel": "Inquisidor Thales",
-      "descricao": "Chegou a hora de submeter nossos pergaminhos ao rigoroso conselho mágico do W3C. Eles vão apontar qualquer feitiço mal escrito ou tag não fechada que possa quebrar a interface.",
+      "projeto": "Clã Trovão Dourado",
+      "responsavel": "P.E.K.K.A.",
+      "descricao": "A P.E.K.K.A. foi enviada à Sala do Conselho para enfrentar o julgamento mais duro de todos: o validador do W3C não perdoa tag mal fechada.",
       "status": "em-revisao",
       "prioridade": "alta",
       "prazo": "2026-08-12"
@@ -53,9 +53,9 @@
     {
       "id": 6,
       "titulo": "Documentação dos Casos de Uso",
-      "projeto": "As Crônicas de Interação",
-      "responsavel": "Bardo Jaskier",
-      "descricao": "Documente as lendas e os passos de como os heróis e NPCs irão interagir com o artefato de software criado. Descreva fluxos principais, alternativos e exceções.",
+      "projeto": "Clã Trovão Dourado",
+      "responsavel": "Caçadora",
+      "descricao": "A Caçadora está registrando cada rota de ataque possível: os casos de uso principais e as emboscadas alternativas do sistema.",
       "status": "em-revisao",
       "prioridade": "media",
       "prazo": "2026-08-13"
@@ -63,9 +63,9 @@
     {
       "id": 7,
       "titulo": "Configuração Inicial do Repositório Git",
-      "projeto": "O Controle do Tempo",
-      "responsavel": "Chrono, o Guardião",
-      "descricao": "Inicialize a magia de controle do tempo (Git). Só assim seremos capazes de conjurar 'git revert' caso algum aprendiz destrua a base do castelo.",
+      "projeto": "Clã Dragões Ancestrais",
+      "responsavel": "Dragão Ancião",
+      "descricao": "O Dragão Ancião abriu as portas do arquivo do clã: repositório Git inicializado, pronto para guardar cada evolução da vila.",
       "status": "concluida",
       "prioridade": "media",
       "prazo": "2026-08-05"
@@ -73,9 +73,9 @@
     {
       "id": 8,
       "titulo": "Definição do Tema do Projeto",
-      "projeto": "A Grande Escolha",
-      "responsavel": "Conselho da Guilda",
-      "descricao": "Reunião no Salão Principal para decidir qual será o grande tema de nossa próxima saga acadêmica. (Missão concluída com glória!).",
+      "projeto": "Clã Dragões Ancestrais",
+      "responsavel": "Conselho do Clã",
+      "descricao": "Em reunião na Sala do Conselho, o clã escolheu por unanimidade o tema da próxima grande construção: glória e troféus garantidos.",
       "status": "concluida",
       "prioridade": "baixa",
       "prazo": "2026-08-01"
