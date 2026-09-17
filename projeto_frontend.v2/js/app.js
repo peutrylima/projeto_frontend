@@ -1,294 +1,327 @@
-// Base de dados inicial das missões
-const estado = {
-  tarefas: [
-    { 
-      id: 1, 
-      titulo: "Modelagem de Banco de Dados Relacional", 
-      projeto: "Campanha do Cálice de Dados", 
-      responsavel: "Mago Alatar", 
-      status: "a-fazer", 
-      prioridade: "alta", 
-      prazo: "2026-08-20", 
-      descricao: "Criar a estrutura do diagrama entidade-relacionamento da guilda." 
-    },
-    { 
-      id: 2, 
-      titulo: "Elaboração dos Diagramas UML", 
-      projeto: "A Visão Estrutural", 
-      responsavel: "Arquiteta Elara", 
-      status: "a-fazer", 
-      prioridade: "media", 
-      prazo: "2026-08-22", 
-      descricao: "Mapear casos de uso e diagramas de classe." 
-    },
-    { 
-      id: 3, 
-      titulo: "Desenvolvimento do HTML Semântico", 
-      projeto: "A Fundação da Teia", 
-      responsavel: "Kael, o Construtor", 
-      status: "em-andamento", 
-      prioridade: "alta", 
-      prazo: "2026-08-11", 
-      descricao: "Estruturar a página principal com boas práticas de acessibilidade." 
-    },
-    { 
-      id: 4, 
-      titulo: "Pesquisa de Requisitos de Acessibilidade", 
-      projeto: "Inclusão Universal", 
-      responsavel: "Clériga Lumis", 
-      status: "em-andamento", 
-      prioridade: "baixa", 
-      prazo: "2026-08-14", 
-      descricao: "Analisar contraste de cores e navegabilidade por teclado." 
-    },
-    { 
-      id: 5, 
-      titulo: "Revisão de Validação do HTML W3C", 
-      projeto: "O Julgamento dos Sábios W3C", 
-      responsavel: "Inquisidor Thales", 
-      status: "em-revisao", 
-      prioridade: "alta", 
-      prazo: "2026-08-12", 
-      descricao: "Validar marcação semântica nos padrões oficiais." 
-    },
-    { 
-      id: 6, 
-      titulo: "Documentação dos Casos de Uso", 
-      projeto: "As Crônicas de Interação", 
-      responsavel: "Bardo Jaskier", 
-      status: "em-revisao", 
-      prioridade: "media", 
-      prazo: "2026-08-13", 
-      descricao: "Escrever os fluxos principal e alternativo do sistema." 
-    },
-    { 
-      id: 7, 
-      titulo: "Configuração Inicial do Repositório", 
-      projeto: "O Controle do Tempo", 
-      responsavel: "Chrono, o Guardião", 
-      status: "concluida", 
-      prioridade: "media", 
-      prazo: "2026-08-05", 
-      descricao: "Inicialização do repositório Git com README bem detalhado." 
-    },
-    { 
-      id: 8, 
-      titulo: "Definição do Tema do Projeto", 
-      projeto: "A Grande Escolha", 
-      responsavel: "Conselho da Guilda", 
-      status: "concluida", 
-      prioridade: "baixa", 
-      prazo: "2026-08-01", 
-      descricao: "Aprovação unânime do tema RPG para o gerenciador de tarefas." 
-    }
-  ],
-  filtros: {
-    busca: '',
-    status: 'todos',
-    prioridade: 'todas',
-    ordenacao: 'padrao'
-  }
+import { carregarTarefas } from './api.js';
+import { renderizarEstado } from './estados.js';
+
+/* =========================================================
+   1. ESTADO ÚNICO DA APLICAÇÃO (fonte da verdade)
+   A tela é sempre uma projeção deste objeto.
+   ========================================================= */
+const VALORES_INICIAIS = {
+  busca: '',
+  status: 'todos',
+  prioridade: 'todas',
+  ordenacao: 'padrao'
 };
 
-// Mapeamento dos elementos DOM
-function obterListasDOM() {
-  return {
-    'a-fazer': document.getElementById('lista-a-fazer'),
-    'em-andamento': document.getElementById('lista-em-andamento'),
-    'em-revisao': document.getElementById('lista-em-revisao'),
-    'concluida': document.getElementById('lista-concluida')
-  };
+const estado = {
+  tarefas: [],        // array original vindo de carregarTarefas(), nunca alterado
+  busca: '',
+  status: 'todos',
+  prioridade: 'todas',
+  ordenacao: 'padrao',
+  carregando: false,
+  erro: null
+};
+
+let primeiraCargaConcluida = false;
+
+const ROTULOS_FASE = {
+  'a-fazer': 'Fila de Construção',
+  'em-andamento': 'Em Batalha',
+  'em-revisao': 'Sala do Conselho',
+  'concluida': 'Troféus'
+};
+
+const ROTULOS_CUSTO = {
+  baixa: '🟡 Ouro',
+  media: '💜 Elixir',
+  alta: '⬛ Elixir Negro'
+};
+
+/* =========================================================
+   2. DERIVAÇÃO
+   Recebe o estado e devolve a lista visível.
+   Não consulta o DOM. Não altera o estado nem estado.tarefas.
+   ========================================================= */
+export function derivarTarefasVisiveis(estadoAtual) {
+  const termo = estadoAtual.busca.trim().toLowerCase();
+
+  const filtradas = estadoAtual.tarefas.filter((tarefa) => {
+    const casaBusca =
+      termo === '' || String(tarefa.titulo).toLowerCase().includes(termo);
+    const casaStatus =
+      estadoAtual.status === 'todos' || tarefa.status === estadoAtual.status;
+    const casaPrioridade =
+      estadoAtual.prioridade === 'todas' ||
+      tarefa.prioridade === estadoAtual.prioridade;
+    return casaBusca && casaStatus && casaPrioridade;
+  });
+
+  // Cópia explícita antes de ordenar: sort() altera o array em que opera,
+  // por isso nunca é chamado diretamente sobre estado.tarefas.
+  if (estadoAtual.ordenacao === 'prazo-asc') {
+    return [...filtradas].sort((a, b) => String(a.prazo).localeCompare(String(b.prazo)));
+  }
+  if (estadoAtual.ordenacao === 'prazo-desc') {
+    return [...filtradas].sort((a, b) => String(b.prazo).localeCompare(String(a.prazo)));
+  }
+  return filtradas;
 }
 
-// Inicialização segura após carregamento da página
-document.addEventListener('DOMContentLoaded', () => {
-  configurarEventos();
-  renderizarBoard();
-});
+/* =========================================================
+   3. PAINEL DE RECURSOS (contadores + anel de troféus)
+   Deriva sempre de estado.tarefas inteiro — não dos filtros —
+   porque é o progresso geral da vila, não da busca atual.
+   ========================================================= */
+function atualizarPainel() {
+  const contagens = {
+    'a-fazer': 0,
+    'em-andamento': 0,
+    'em-revisao': 0,
+    'concluida': 0
+  };
 
-function renderizarBoard() {
-  const listas = obterListasDOM();
-
-  // Limpa o conteúdo das listas
-  Object.values(listas).forEach(lista => {
-    if (lista) lista.innerHTML = '';
-  });
-
-  // Filtra as missões
-  const tarefasFiltradas = estado.tarefas.filter(tarefa => {
-    const buscaMatch = tarefa.titulo.toLowerCase().includes(estado.filtros.busca.toLowerCase());
-    const statusMatch = estado.filtros.status === 'todos' || tarefa.status === estado.filtros.status;
-    const prioMatch = estado.filtros.prioridade === 'todas' || tarefa.prioridade === estado.filtros.prioridade;
-    return buscaMatch && statusMatch && prioMatch;
-  });
-
-  // Ordena se necessário
-  if (estado.filtros.ordenacao === 'prazo-asc') {
-    tarefasFiltradas.sort((a, b) => new Date(a.prazo) - new Date(b.prazo));
-  } else if (estado.filtros.ordenacao === 'prazo-desc') {
-    tarefasFiltradas.sort((a, b) => new Date(b.prazo) - new Date(a.prazo));
-  }
-
-  // Renderiza cartões
-  tarefasFiltradas.forEach(tarefa => {
-    const card = criarCartaoTarefa(tarefa);
-    if (listas[tarefa.status]) {
-      listas[tarefa.status].appendChild(card);
+  estado.tarefas.forEach((tarefa) => {
+    if (contagens[tarefa.status] !== undefined) {
+      contagens[tarefa.status] += 1;
     }
   });
 
-  atualizarProgressoEDashboards();
-}
-
-function criarCartaoTarefa(tarefa) {
-  const li = document.createElement('li');
-  li.className = 'task-card';
-
-  const prioridadeLabels = { baixa: '🥉 Bronze', media: '🥈 Prata', alta: '🥇 Ouro' };
-  const dataFormatada = new Date(tarefa.prazo).toLocaleDateString('pt-BR', { timeZone: 'UTC' });
-
-  li.innerHTML = `
-    <h3 class="task-title">${tarefa.titulo}</h3>
-    <p class="project-info"><strong>Campanha:</strong> ${tarefa.projeto}</p>
-    <p class="assignee-info"><strong>Aventureiro(a):</strong> ${tarefa.responsavel}</p>
-    <div class="card-footer">
-      <span class="priority priority-${tarefa.prioridade}">${prioridadeLabels[tarefa.prioridade]}</span>
-      <span class="due-date">${dataFormatada}</span>
-    </div>
-    <button type="button" class="btn-detalhes" data-id="${tarefa.id}">Ver Missão</button>
-  `;
-
-  // Adiciona evento ao botão do cartão
-  const btn = li.querySelector('.btn-detalhes');
-  btn.addEventListener('click', () => abrirDetalhes(tarefa.id));
-
-  return li;
-}
-
-function atualizarProgressoEDashboards() {
   const total = estado.tarefas.length;
-  const concluidas = estado.tarefas.filter(t => t.status === 'concluida').length;
+  const concluidas = contagens.concluida;
   const percentual = total === 0 ? 0 : Math.round((concluidas / total) * 100);
 
-  // 1. Atualizar progresso circular
-  const progressoCircular = document.getElementById('progresso-circular');
-  const nivelEl = document.getElementById('nivel-guilda');
-  const textoEl = document.getElementById('progresso-texto');
-
-  if (progressoCircular) {
-    progressoCircular.style.setProperty('--progresso', percentual);
-    progressoCircular.setAttribute('aria-valuenow', percentual);
-  }
-
-  let emojiNivel = '🌱';
-  if (percentual >= 25) emojiNivel = '⚔️';
-  if (percentual >= 75) emojiNivel = '🧙‍♂️';
-  if (percentual === 100) emojiNivel = '👑';
-
-  if (nivelEl) nivelEl.textContent = emojiNivel;
-  if (textoEl) textoEl.textContent = `${concluidas}/${total}`;
-
-  // 2. Contagens por fase
-  const countMural = estado.tarefas.filter(t => t.status === 'a-fazer').length;
-  const countCurso = estado.tarefas.filter(t => t.status === 'em-andamento').length;
-  const countVerificacao = estado.tarefas.filter(t => t.status === 'em-revisao').length;
-
-  // Atualizar caixas do topo
-  document.getElementById('count-mural').textContent = countMural;
-  document.getElementById('count-curso').textContent = countCurso;
-  document.getElementById('count-verificacao').textContent = countVerificacao;
-  document.getElementById('count-conquista').textContent = concluidas;
-
-  // Atualizar cabeçalhos das colunas
-  document.getElementById('header-count-mural').textContent = countMural;
-  document.getElementById('header-count-curso').textContent = countCurso;
-  document.getElementById('header-count-verificacao').textContent = countVerificacao;
-  document.getElementById('header-count-conquista').textContent = concluidas;
-}
-
-function configurarEventos() {
-  // Alternância entre Modo Guerra (Escuro) e Modo Paz (Claro)
-  const btnTema = document.getElementById('btn-modo-tema');
-  if (btnTema) {
-    btnTema.addEventListener('click', () => {
-      const modoGuerraAtivo = document.body.classList.toggle('modo-guerra');
-      btnTema.textContent = modoGuerraAtivo ? '🕊️ Modo Paz' : '⚔️ Modo Guerra';
-    });
-  }
-
-  // Campo de busca
-  const buscaInput = document.getElementById('busca-titulo');
-  if (buscaInput) {
-    buscaInput.addEventListener('input', (e) => {
-      estado.filtros.busca = e.target.value;
-      renderizarBoard();
-    });
-  }
-
-  // Radios de status
-  document.querySelectorAll('input[name="filtro-status"]').forEach(radio => {
-    radio.addEventListener('change', (e) => {
-      estado.filtros.status = e.target.value;
-      renderizarBoard();
-    });
-  });
-
-  // Radios de prioridade
-  document.querySelectorAll('input[name="filtro-prioridade"]').forEach(radio => {
-    radio.addEventListener('change', (e) => {
-      estado.filtros.prioridade = e.target.value;
-      renderizarBoard();
-    });
-  });
-
-  // Select de ordenação
-  const selectOrdenacao = document.getElementById('ordenacao-prazo');
-  if (selectOrdenacao) {
-    selectOrdenacao.addEventListener('change', (e) => {
-      estado.filtros.ordenacao = e.target.value;
-      renderizarBoard();
-    });
-  }
-
-  // Botão limpar filtros
-  const btnLimpar = document.getElementById('limpar-filtros');
-  if (btnLimpar) {
-    btnLimpar.addEventListener('click', () => {
-      document.getElementById('form-filtros').reset();
-      estado.filtros = { busca: '', status: 'todos', prioridade: 'todas', ordenacao: 'padrao' };
-      renderizarBoard();
-    });
-  }
-
-  // Dialog
-  const btnFecharDialog = document.getElementById('fechar-dialogo');
-  if (btnFecharDialog) {
-    btnFecharDialog.addEventListener('click', () => {
-      document.getElementById('dialogo-tarefa').close();
-    });
-  }
-}
-
-function abrirDetalhes(id) {
-  const tarefa = estado.tarefas.find(t => t.id === id);
-  if (!tarefa) return;
-
-  const prioridadeLabels = { baixa: 'Bronze', media: 'Prata', alta: 'Ouro' };
-  const statusLabels = { 
-    'a-fazer': 'Mural', 
-    'em-andamento': 'Em Curso', 
-    'em-revisao': 'Verificação', 
-    'concluida': 'Conquista' 
+  const definirTexto = (id, texto) => {
+    const el = document.getElementById(id);
+    if (el) el.textContent = texto;
   };
-  const dataFormatada = new Date(tarefa.prazo).toLocaleDateString('pt-BR', { timeZone: 'UTC' });
+
+  definirTexto('contagem-fila', contagens['a-fazer']);
+  definirTexto('contagem-batalha', contagens['em-andamento']);
+  definirTexto('contagem-conselho', contagens['em-revisao']);
+  definirTexto('contagem-trofeus', concluidas);
+  definirTexto('progresso-texto', `${concluidas}/${total}`);
+
+  const anel = document.getElementById('anel-trofeu');
+  if (anel) {
+    anel.style.setProperty('--progresso', String(percentual));
+    anel.setAttribute('aria-valuenow', String(percentual));
+
+    // O "estouro" de troféu é o único movimento de destaque da página,
+    // e acontece uma única vez: quando os dados chegam pela primeira vez.
+    if (!primeiraCargaConcluida && total > 0) {
+      primeiraCargaConcluida = true;
+      anel.classList.remove('trofeu-revelado');
+      void anel.offsetWidth; // força o navegador a registrar a remoção da classe
+      anel.classList.add('trofeu-revelado');
+    }
+  }
+}
+
+/* =========================================================
+   4. PONTO ÚNICO DE RENDERIZAÇÃO
+   ========================================================= */
+function renderizar() {
+  atualizarPainel();
+
+  if (estado.carregando) {
+    renderizarEstado('carregando');
+    return;
+  }
+
+  if (estado.erro) {
+    renderizarEstado('erro', estado.erro);
+    return;
+  }
+
+  if (estado.tarefas.length === 0) {
+    renderizarEstado('vazio');
+    return;
+  }
+
+  const visiveis = derivarTarefasVisiveis(estado);
+
+  if (visiveis.length === 0) {
+    renderizarEstado('sem-resultados');
+    return;
+  }
+
+  renderizarEstado('sucesso', {
+    visiveis,
+    total: estado.tarefas.length
+  });
+}
+
+/* =========================================================
+   5. FICHA DA MISSÃO (dialog)
+   Lê a tarefa do estado, nunca do DOM.
+   ========================================================= */
+function abrirDetalhes(tarefa) {
+  const dialogo = document.getElementById('dialogo-tarefa');
 
   document.getElementById('dialogo-titulo').textContent = tarefa.titulo;
-  document.getElementById('detalhe-projeto').textContent = tarefa.projeto;
-  document.getElementById('detalhe-responsavel').textContent = tarefa.responsavel;
-  document.getElementById('detalhe-status').textContent = statusLabels[tarefa.status];
-  document.getElementById('detalhe-prioridade').textContent = prioridadeLabels[tarefa.prioridade];
-  document.getElementById('detalhe-prazo').textContent = dataFormatada;
-  document.getElementById('detalhe-descricao').textContent = tarefa.descricao;
+  document.getElementById('detalhe-projeto').textContent =
+    tarefa.projeto || 'Não informado';
+  document.getElementById('detalhe-responsavel').textContent =
+    tarefa.responsavel || 'Não designada';
+  document.getElementById('detalhe-status').textContent =
+    ROTULOS_FASE[tarefa.status] || tarefa.status;
+  document.getElementById('detalhe-prioridade').textContent =
+    ROTULOS_CUSTO[tarefa.prioridade] || tarefa.prioridade;
+  document.getElementById('detalhe-prazo').textContent =
+    formatarData(tarefa.prazo);
+  document.getElementById('detalhe-descricao').textContent =
+    tarefa.descricao || 'Sem registro de campo para esta missão.';
 
-  document.getElementById('dialogo-tarefa').showModal();
+  dialogo.showModal();
 }
+
+function formatarData(dataISO) {
+  if (!dataISO) return '';
+  const partes = String(dataISO).split('-');
+  if (partes.length !== 3) return String(dataISO);
+  return `${partes[2]}/${partes[1]}/${partes[0]}`;
+}
+
+/* =========================================================
+   6. ALTERNADOR DE BASE (Base Principal / Base do Construtor)
+   Troca só a aparência (variáveis de cor). Nenhum dado muda.
+   ========================================================= */
+function configurarAlternadorDeBase() {
+  const botao = document.getElementById('alternar-base');
+  const rotulo = document.getElementById('rotulo-base');
+  const raiz = document.documentElement;
+  if (!botao || !rotulo) return;
+
+  function aplicarBase(tema) {
+    if (tema === 'construtor') {
+      raiz.setAttribute('data-tema', 'construtor');
+      rotulo.textContent = 'Base Principal';
+      botao.setAttribute('aria-pressed', 'true');
+    } else {
+      raiz.removeAttribute('data-tema');
+      rotulo.textContent = 'Base do Construtor';
+      botao.setAttribute('aria-pressed', 'false');
+    }
+  }
+
+  botao.addEventListener('click', () => {
+    const atual = raiz.getAttribute('data-tema') === 'construtor' ? 'construtor' : 'principal';
+    const proximo = atual === 'principal' ? 'construtor' : 'principal';
+    aplicarBase(proximo);
+    try {
+      localStorage.setItem('vila-missoes-tema', proximo);
+    } catch (erro) {
+      // Sem suporte a localStorage: a preferência simplesmente não persiste
+    }
+  });
+
+  let temaSalvo = null;
+  try {
+    temaSalvo = localStorage.getItem('vila-missoes-tema');
+  } catch (erro) {
+    temaSalvo = null;
+  }
+  if (temaSalvo === 'construtor') aplicarBase('construtor');
+}
+
+/* =========================================================
+   7. OUVINTES: cada um altera o estado e chama renderizar()
+   ========================================================= */
+function registrarOuvintes() {
+  const campoBusca = document.getElementById('busca-titulo');
+  const formFiltros = document.querySelector('.filters-form');
+  const selectOrdenacao = document.getElementById('ordenacao-prazo');
+  const botaoLimpar = document.getElementById('limpar-filtros');
+  const quadro = document.querySelector('.board-grid');
+  const dialogo = document.getElementById('dialogo-tarefa');
+  const botaoFechar = document.getElementById('fechar-dialogo');
+
+  formFiltros.addEventListener('submit', (evento) => evento.preventDefault());
+
+  campoBusca.addEventListener('input', (evento) => {
+    estado.busca = evento.target.value;
+    renderizar();
+  });
+
+  formFiltros.addEventListener('change', (evento) => {
+    const alvo = evento.target;
+    if (alvo.name === 'filtro-status') {
+      estado.status = alvo.value;
+      renderizar();
+    } else if (alvo.name === 'filtro-prioridade') {
+      estado.prioridade = alvo.value;
+      renderizar();
+    }
+  });
+
+  selectOrdenacao.addEventListener('change', (evento) => {
+    estado.ordenacao = evento.target.value;
+    renderizar();
+  });
+
+  botaoLimpar.addEventListener('click', () => {
+    estado.busca = VALORES_INICIAIS.busca;
+    estado.status = VALORES_INICIAIS.status;
+    estado.prioridade = VALORES_INICIAIS.prioridade;
+    estado.ordenacao = VALORES_INICIAIS.ordenacao;
+
+    campoBusca.value = estado.busca;
+    document.getElementById('status-todos').checked = true;
+    document.getElementById('prio-todas').checked = true;
+    selectOrdenacao.value = estado.ordenacao;
+
+    renderizar();
+  });
+
+  // Evento delegado no container que nunca é substituído: continua
+  // funcionando mesmo depois de cada nova renderização dos cartões.
+  quadro.addEventListener('click', (evento) => {
+    const botao = evento.target.closest('[data-acao="detalhes"]');
+    if (!botao) return;
+
+    const tarefa = estado.tarefas.find(
+      (item) => String(item.id) === botao.dataset.id
+    );
+    if (!tarefa) return;
+
+    abrirDetalhes(tarefa);
+  });
+
+  botaoFechar.addEventListener('click', () => dialogo.close());
+  dialogo.addEventListener('click', (evento) => {
+    if (evento.target === dialogo) dialogo.close();
+  });
+
+  configurarAlternadorDeBase();
+}
+
+/* =========================================================
+   8. INICIALIZAÇÃO
+   ========================================================= */
+async function iniciarApp() {
+  registrarOuvintes();
+
+  estado.carregando = true;
+  estado.erro = null;
+  renderizar();
+
+  try {
+    const tarefas = await carregarTarefas();
+    estado.tarefas = Array.isArray(tarefas) ? tarefas : [];
+    estado.erro = null;
+  } catch (erro) {
+    if (erro.name === 'TypeError') {
+      estado.erro = 'Falha na conexão de rede ou servidor indisponível.';
+    } else if (erro.name === 'SyntaxError') {
+      estado.erro = 'O arquivo de dados possui um formato inválido.';
+    } else {
+      estado.erro = erro.message;
+    }
+    estado.tarefas = [];
+  } finally {
+    estado.carregando = false;
+    renderizar();
+  }
+}
+
+document.addEventListener('DOMContentLoaded', iniciarApp);
