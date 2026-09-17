@@ -1,7 +1,7 @@
-const ROTULOS_DIFICULDADE = {
-  baixa: '🥉 Bronze',
-  media: '🥈 Prata',
-  alta: '🥇 Ouro'
+const ROTULOS_CUSTO = {
+  baixa: '🟡 Ouro',
+  media: '💜 Elixir',
+  alta: '⬛ Elixir Negro'
 };
 
 export function renderizarTarefas(tarefas = []) {
@@ -46,25 +46,25 @@ export function renderizarTarefas(tarefas = []) {
 
     const li = document.createElement('li');
     const prioridade = tarefa.prioridade || '';
-    const dificuldadeTexto = ROTULOS_DIFICULDADE[prioridade] || prioridade;
+    const custoTexto = ROTULOS_CUSTO[prioridade] || prioridade;
     const titulo = sanitizarTexto(tarefa.titulo);
 
     li.innerHTML = `
       <article class="task-card">
+        <span class="custo-badge custo-${prioridade}">${custoTexto}</span>
         <h3 class="task-title" title="${titulo}">${titulo}</h3>
-        <p class="project-info"><strong>Campanha:</strong> ${sanitizarTexto(tarefa.projeto || 'Não informada')}</p>
-        <p class="assignee-info"><strong>Aventureiro(a):</strong> ${sanitizarTexto(tarefa.responsavel || 'Não atribuído')}</p>
+        <p class="project-info"><strong>Clã:</strong> ${sanitizarTexto(tarefa.projeto || 'Não informado')}</p>
+        <p class="assignee-info"><strong>Tropa:</strong> ${sanitizarTexto(tarefa.responsavel || 'Não designada')}</p>
         <div class="card-footer">
-          <span class="priority priority-${prioridade}">${dificuldadeTexto}</span>
-          <p class="due-date"><time datetime="${sanitizarTexto(tarefa.prazo)}">${formatarData(tarefa.prazo)}</time></p>
+          <span class="due-date">⏱️ <time datetime="${sanitizarTexto(tarefa.prazo)}">${formatarData(tarefa.prazo)}</time></span>
+          <button
+            type="button"
+            class="btn-detalhes"
+            data-acao="detalhes"
+            data-id="${sanitizarTexto(tarefa.id)}"
+            aria-haspopup="dialog"
+            aria-label="Ver detalhes da missão: ${titulo}">Ver missão</button>
         </div>
-        <button
-          type="button"
-          class="btn-detalhes"
-          data-acao="detalhes"
-          data-id="${sanitizarTexto(tarefa.id)}"
-          aria-haspopup="dialog"
-          aria-label="Consultar o pergaminho da missão: ${titulo}">Ver missão</button>
       </article>
     `;
 
