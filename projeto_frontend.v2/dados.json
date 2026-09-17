@@ -1,0 +1,84 @@
+{
+  "tarefas": [
+    {
+      "id": 1,
+      "titulo": "Modelagem de Banco de Dados Relacional",
+      "projeto": "Campanha do Cálice de Dados",
+      "responsavel": "Mago Alatar",
+      "descricao": "Os antigos registros da biblioteca de Alexandria precisam ser organizados em tabelas arcanas relacionais para fácil acesso do conselho. Não esqueça de definir as chaves estrangeiras como selos de proteção.",
+      "status": "a-fazer",
+      "prioridade": "alta",
+      "prazo": "2026-08-20"
+    },
+    {
+      "id": 2,
+      "titulo": "Elaboração dos Diagramas UML",
+      "projeto": "A Visão Estrutural",
+      "responsavel": "Arquiteta Elara",
+      "descricao": "Desenhe os mapas estruturais (UML) do nosso novo artefato antes que os artífices comecem a codificar. Sem um mapa claro, a guilda pode se perder no labirinto do código.",
+      "status": "a-fazer",
+      "prioridade": "media",
+      "prazo": "2026-08-22"
+    },
+    {
+      "id": 3,
+      "titulo": "Desenvolvimento do HTML Semântico",
+      "projeto": "A Fundação da Teia",
+      "responsavel": "Kael, o Construtor",
+      "descricao": "A fundação do nosso pergaminho web deve seguir as leis arcanas da semântica. Use as tags corretas (header, nav, main, footer) para afastar os espíritos da desorganização e agradar os deuses buscadores.",
+      "status": "em-andamento",
+      "prioridade": "alta",
+      "prazo": "2026-08-11"
+    },
+    {
+      "id": 4,
+      "titulo": "Pesquisa de Requisitos de Acessibilidade",
+      "projeto": "Inclusão Universal",
+      "responsavel": "Clériga Lumis",
+      "descricao": "É lei na guilda garantir que todos os habitantes do reino, independente de suas limitações ou maldições, possam navegar pelas runas do nosso sistema. Encontre as diretrizes WCAG necessárias.",
+      "status": "em-andamento",
+      "prioridade": "baixa",
+      "prazo": "2026-08-14"
+    },
+    {
+      "id": 5,
+      "titulo": "Revisão de Validação do HTML W3C",
+      "projeto": "O Julgamento dos Sábios W3C",
+      "responsavel": "Inquisidor Thales",
+      "descricao": "Chegou a hora de submeter nossos pergaminhos ao rigoroso conselho mágico do W3C. Eles vão apontar qualquer feitiço mal escrito ou tag não fechada que possa quebrar a interface.",
+      "status": "em-revisao",
+      "prioridade": "alta",
+      "prazo": "2026-08-12"
+    },
+    {
+      "id": 6,
+      "titulo": "Documentação dos Casos de Uso",
+      "projeto": "As Crônicas de Interação",
+      "responsavel": "Bardo Jaskier",
+      "descricao": "Documente as lendas e os passos de como os heróis e NPCs irão interagir com o artefato de software criado. Descreva fluxos principais, alternativos e exceções.",
+      "status": "em-revisao",
+      "prioridade": "media",
+      "prazo": "2026-08-13"
+    },
+    {
+      "id": 7,
+      "titulo": "Configuração Inicial do Repositório Git",
+      "projeto": "O Controle do Tempo",
+      "responsavel": "Chrono, o Guardião",
+      "descricao": "Inicialize a magia de controle do tempo (Git). Só assim seremos capazes de conjurar 'git revert' caso algum aprendiz destrua a base do castelo.",
+      "status": "concluida",
+      "prioridade": "media",
+      "prazo": "2026-08-05"
+    },
+    {
+      "id": 8,
+      "titulo": "Definição do Tema do Projeto",
+      "projeto": "A Grande Escolha",
+      "responsavel": "Conselho da Guilda",
+      "descricao": "Reunião no Salão Principal para decidir qual será o grande tema de nossa próxima saga acadêmica. (Missão concluída com glória!).",
+      "status": "concluida",
+      "prioridade": "baixa",
+      "prazo": "2026-08-01"
+    }
+  ]
+}

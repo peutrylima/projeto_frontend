@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Diário de Missões — releitura RPG</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="js/app.js" defer></script>
+</head>
+<body>
+
+  <header class="app-header">
+    <h1>Diário de Missões da Guilda</h1>
+    
+    <!-- Botão para Alternar Modo Guerra / Modo Paz -->
+    <button type="button" id="btn-modo-tema" class="btn-limpar btn-tema">⚔️ Modo Guerra</button>
+
+    <!-- PAINEL DE COMANDO (Dashboard) -->
+    <div class="dashboard-resumo">
+      
+      <!-- Progresso Circular -->
+      <div class="progresso-circular-container">
+        <div class="progresso-circular" id="progresso-circular" style="--progresso: 0;" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+          <div class="progresso-inner">
+            <span id="nivel-guilda" class="nivel-badge">🌱</span>
+            <span id="progresso-texto" class="progresso-texto">0/0</span>
+          </div>
+        </div>
+        <span class="progresso-rotulo">Concluídas</span>
+      </div>
+
+      <!-- Contadores das 4 Fases -->
+      <div class="contadores-fase">
+        <div class="contador-box box-mural">
+          <span class="box-numero" id="count-mural">0</span>
+          <span class="box-label">Mural</span>
+        </div>
+        <div class="contador-box box-curso">
+          <span class="box-numero" id="count-curso">0</span>
+          <span class="box-label">Em Curso</span>
+        </div>
+        <div class="contador-box box-verificacao">
+          <span class="box-numero" id="count-verificacao">0</span>
+          <span class="box-label">Verificação</span>
+        </div>
+        <div class="contador-box box-conquista">
+          <span class="box-numero" id="count-conquista">0</span>
+          <span class="box-label">Conquistas</span>
+        </div>
+      </div>
+
+    </div>
+  </header>
+
+  <main class="app-main">
+    <div id="regiao-status" role="status" aria-live="polite" class="status-regiao"></div>
+
+    <!-- MESA DE CARTOGRAFIA (Filtros) -->
+    <section class="filters-section" aria-labelledby="titulo-filtros">
+      <div class="filtros-cabecalho">
+        <h2 id="titulo-filtros">📜 Mesa de Cartografia</h2>
+        <button type="button" id="limpar-filtros" class="btn-limpar" aria-label="Limpar todos os filtros e a busca">✨ Limpar Magia</button>
+      </div>
+
+      <form class="filters-form" id="form-filtros" role="search" onsubmit="return false;">
+        <div class="search-bar">
+          <label for="busca-titulo" class="sr-only" style="display:none;">Buscar missão:</label>
+          <input type="search" id="busca-titulo" name="busca-titulo" placeholder="Qual missão procuras, aventureiro? (Busque pelo nome do pergaminho...)">
+        </div>
+
+        <div class="filtros-opcoes">
+          <fieldset class="filter-group">
+            <legend>Fase da missão</legend>
+            <div class="radio-options flex-nowrap">
+              <label class="radio-item"><input type="radio" name="filtro-status" value="todos" checked><span>Todas</span></label>
+              <label class="radio-item"><input type="radio" name="filtro-status" value="a-fazer"><span>Mural</span></label>
+              <label class="radio-item"><input type="radio" name="filtro-status" value="em-andamento"><span>Em curso</span></label>
+              <label class="radio-item"><input type="radio" name="filtro-status" value="em-revisao"><span>Verificação</span></label>
+              <label class="radio-item"><input type="radio" name="filtro-status" value="concluida"><span>Conquistas</span></label>
+            </div>
+          </fieldset>
+
+          <fieldset class="filter-group">
+            <legend>Dificuldade</legend>
+            <div class="radio-options flex-nowrap">
+              <label class="radio-item"><input type="radio" name="filtro-prioridade" value="todas" checked><span>Todas</span></label>
+              <label class="radio-item"><input type="radio" name="filtro-prioridade" value="baixa"><span>🥉</span></label>
+              <label class="radio-item"><input type="radio" name="filtro-prioridade" value="media"><span>🥈</span></label>
+              <label class="radio-item"><input type="radio" name="filtro-prioridade" value="alta"><span>🥇</span></label>
+            </div>
+          </fieldset>
+
+          <div class="form-group sort-group">
+            <legend class="sort-legend">Ordem temporal</legend>
+            <select id="ordenacao-prazo" name="ordenacao-prazo">
+              <option value="padrao">Ordem natural do painel</option>
+              <option value="prazo-asc">Mais urgentes primeiro</option>
+              <option value="prazo-desc">Mais distantes primeiro</option>
+            </select>
+          </div>
+        </div>
+      </form>
+    </section>
+
+    <!-- QUADRO DE MISSÕES -->
+    <div class="board-grid">
+      <section class="status-column status-todo">
+        <header class="column-header">
+          <h2>Mural de Missões</h2>
+          <span class="task-count" id="header-count-mural">0</span>
+        </header>
+        <ul class="task-list" id="lista-a-fazer"></ul>
+      </section>
+
+      <section class="status-column status-in-progress">
+        <header class="column-header">
+          <h2>Em Curso</h2>
+          <span class="task-count" id="header-count-curso">0</span>
+        </header>
+        <ul class="task-list" id="lista-em-andamento"></ul>
+      </section>
+
+      <section class="status-column status-review">
+        <header class="column-header">
+          <h2>Verificação da Guilda</h2>
+          <span class="task-count" id="header-count-verificacao">0</span>
+        </header>
+        <ul class="task-list" id="lista-em-revisao"></ul>
+      </section>
+
+      <section class="status-column status-done">
+        <header class="column-header">
+          <h2>Conquistas</h2>
+          <span class="task-count" id="header-count-conquista">0</span>
+        </header>
+        <ul class="task-list" id="lista-concluida"></ul>
+      </section>
+    </div>
+  </main>
+
+  <!-- FICHA DA MISSÃO -->
+  <dialog id="dialogo-tarefa" class="dialogo">
+    <div class="dialogo-conteudo">
+      <h2 id="dialogo-titulo" class="dialogo-titulo"></h2>
+      <dl class="dialogo-lista">
+        <dt>Campanha</dt><dd id="detalhe-projeto"></dd>
+        <dt>Aventureiro(a)</dt><dd id="detalhe-responsavel"></dd>
+        <dt>Fase</dt><dd id="detalhe-status"></dd>
+        <dt>Dificuldade</dt><dd id="detalhe-prioridade"></dd>
+        <dt>Prazo</dt><dd id="detalhe-prazo"></dd>
+        <dt>Registro</dt><dd id="detalhe-descricao"></dd>
+      </dl>
+      <div class="dialogo-acoes">
+        <button type="button" id="fechar-dialogo" class="btn-limpar">Fechar Pergaminho</button>
+      </div>
+    </div>
+  </dialog>
+
+  <footer class="app-footer">
+    <p>Desenvolvido por: <strong>Peutry de Lima Silva</strong></p>
+    <p>Releitura criativa — Desenvolvimento Frontend — 2026.2</p>
+  </footer>
+
+</body>
+</html>
