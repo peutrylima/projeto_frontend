@@ -10,32 +10,32 @@ export function renderizarEstado(estado, dados = null) {
 
   switch (estado) {
     case 'carregando':
-      regiaoStatus.textContent = 'Desenrolando o mural de missões...';
+      regiaoStatus.textContent = 'Escaneando a vila em busca de missões do clã...';
       renderizarTarefas([]);
       break;
 
     case 'sucesso':
       regiaoStatus.textContent =
-        `Exibindo ${dados.visiveis.length} de ${dados.total} missões da guilda.`;
+        `Exibindo ${dados.visiveis.length} de ${dados.total} missões do clã.`;
       renderizarTarefas(dados.visiveis);
       break;
 
     // Origem vazia: o dados.json não trouxe nenhuma missão
     case 'vazio':
       regiaoStatus.textContent =
-        'O mural está vazio. Nenhuma missão foi registrada ainda.';
+        'O quartel-general está vazio. Nenhuma missão foi registrada ainda.';
       renderizarTarefas([]);
       break;
 
     // Resultado vazio: existem missões, mas os critérios não encontraram nenhuma
     case 'sem-resultados':
       regiaoStatus.textContent =
-        'Nenhuma missão corresponde a esses critérios. Ajuste a busca ou recomece a jornada.';
+        'Nenhuma missão bate com esses critérios. Ajuste a busca ou limpe os filtros.';
       renderizarTarefas([]);
       break;
 
     case 'erro':
-      regiaoStatus.textContent = `As runas de conexão falharam: ${dados}`;
+      regiaoStatus.textContent = `A conexão com a vila falhou: ${dados}`;
       renderizarTarefas([]);
       break;
 
